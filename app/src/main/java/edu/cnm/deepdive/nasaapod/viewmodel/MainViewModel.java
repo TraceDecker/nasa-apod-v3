@@ -42,6 +42,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
+
   }
 
   public LiveData<List<ApodWithStats>> getAllApodSummaries() {
@@ -60,18 +61,24 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
     throwable.setValue(null);
     pending.add(
         repository.get(date)
-            .doOnSuccess(apod::postValue)
-            .doOnError(throwable::postValue)
-            .subscribe()
+            .subscribe(
+                apod::postValue,
+                throwable::postValue
+            )
     );
   }
 
   public void getImage(@NonNull Apod apod, @NonNull Consumer<String> pathConsumer) {
     throwable.setValue(null);
-    repository.getImage(apod)
-        .doOnSuccess(pathConsumer)
-        .doOnError(throwable::postValue)
-        .subscribe();
+    pending.add(
+
+        repository.getImage(apod)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                pathConsumer,
+                throwable::setValue
+            )
+    );
   }
 
   @SuppressWarnings("unused")
