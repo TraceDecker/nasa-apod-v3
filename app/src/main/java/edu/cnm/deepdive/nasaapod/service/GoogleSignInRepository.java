@@ -60,7 +60,7 @@ public class GoogleSignInRepository {
     activity.startActivityForResult(intent, requestCode);
   }
 
-  public Task<GoogleSignInAccount> completeSignIm(Intent data) {
+  public Task<GoogleSignInAccount> completeSignIn(Intent data) {
     Task<GoogleSignInAccount> task = null;
     try {
       task = GoogleSignIn.getSignedInAccountFromIntent(data);

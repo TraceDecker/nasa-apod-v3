@@ -107,7 +107,7 @@ public class ApodRepository {
   private String download(ResponseBody body, File file) throws IOException {
     try (
         InputStream input = body.byteStream();
-        OutputStream output = new FileOutputStream(file);
+        OutputStream output = new FileOutputStream(file)
     ) {
       byte[] buffer = new byte[16_384];
       int bytesRead = 0;
